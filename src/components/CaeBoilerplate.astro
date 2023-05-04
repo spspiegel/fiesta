@@ -1,0 +1,599 @@
+---
+const { sub } = Astro.props
+const { text } = Astro.props
+
+import { res } from '../assets/example'
+const doc = res
+
+import ErrorModal from './ErrorModal.astro'
+import GoTopButton from './GoTopButton.astro'
+---
+
+<div>
+  <GoTopButton/>
+  <div class='container'>
+    <div class='units-row'>
+      <div class='unit-100'>
+        <div class='separadorBlanco'></div>
+
+        <h2 style="font-weight: 400;">{sub ? sub : `Constatación de Comprobantes`}</h2>
+
+        <p class='font-size-15 textJustify'>
+          {
+            text
+              ? text
+              : `Esta consulta permite a los receptores de comprobantes electrónicos
+                habilitados constatar que cada uno de ellos se encuentre autorizado
+                por la AFIP. Para ello deberá completar los datos del comprobante que
+                se indican a continuación:`
+          }
+        </p>
+      </div>
+      <div class='separadorDottedSimple'></div>
+      <div class='unit-100'>
+        <!-- FORMULARIO INICIO-->
+        <form
+          name='aspnetForm'
+          method='post'
+          action='cae.aspx'
+          id='aspnetForm'
+        >
+          <div>
+            <div
+              id='formularioDatos'
+              class='unit-100'
+              style="margin-top: 40px;"
+            >
+              <div class='units-row'>
+                <div class='unit-30'>
+                  <h6>Número de CUIT:</h6>
+                </div>
+                <div class='unit-70'>
+                  <input
+                    type='text'
+                    id='p_CUIT'
+                    value={doc.cuit}
+                    autocomplete='off'
+                    maxlength='11'
+                    class='numeric-only'
+                    original-title='11 dígitos'
+                    disabled
+                  />
+                </div>
+              </div>
+              <div class='units-row'>
+                <div class='unit-30'>
+                  <h6>Número de CAE:</h6>
+                </div>
+                <div class='unit-70'>
+                  <input
+                    type='text'
+                    id='p_CAE'
+                    autocomplete='off'
+                    maxlength='14'
+                    class='numeric-only'
+                    original-title='14 dígitos'
+                    disabled
+                    value={doc.cae}
+                  />
+                </div>
+              </div>
+              <div class='units-row'>
+                <div class='unit-30'>
+                  <h6>Fecha de Emisión del Comprobante:</h6>
+                </div>
+                <div class='unit-70'>
+                  <input
+                    type='text'
+                    id='p_fch_emision'
+                    maxlength='10'
+                    placeholder='DD/MM/AAAA'
+                    class='hasDatepicker'
+                    disabled
+                    value={doc.fechaEmision}
+                  />
+                </div>
+              </div>
+              <div class='units-row'>
+                <div class='unit-30'>
+                  <h6>Tipo de Comprobante:</h6>
+                </div>
+                <div class='unit-70'>
+                  <select
+                    name='ctl00$cphBody$p_tipo_cbte'
+                    id='ctl00_cphBody_p_tipo_cbte'
+                    style='display: none;'
+                  >
+                    <option
+                      selected='selected'
+                      value=''
+                    ></option>
+                    <option value='1'>1 - Factura A</option>
+                    <option value='2'>2 - Nota de Débito A</option>
+                    <option value='3'>3 - Nota de Crédito A</option>
+                    <option value='4'>4 - Recibo A</option>
+                    <option value='5'>5 - Nota de Venta al Contado A</option>
+                    <option value='6'>6 - Factura B</option>
+                    <option value='7'>7 - Nota de Débito B</option>
+                    <option value='8'>8 - Nota de Crédito B</option>
+                    <option value='9'>9 - Recibo B</option>
+                    <option value='10'>10 - Nota de Venta al Contado B</option>
+                    <option value='11'>11 - Factura C</option>
+                    <option value='12'>12 - Nota de Débito C</option>
+                    <option value='13'>13 - Nota de Crédito C</option>
+                    <option value='15'>15 - Recibo C</option>
+                    <option value='19'>19 - Factura de Exportación</option>
+                    <option value='20'
+                      >20 - Nota Déb. P/Operac. con el Exterior</option
+                    >
+                    <option value='21'
+                      >21 - Nota Créd. P/Operac. con el Exterior</option
+                    >
+                    <option value='39'
+                      >39 - Otros Comprobantes A que Cumplan con la R.G. Nro.
+                      1415</option
+                    >
+                    <option value='40'
+                      >40 - Otros Comprobantes B que Cumplan con la R.G. Nro.
+                      1415</option
+                    >
+                    <option value='49'
+                      >49 - Comprobante de Compra de Bienes Usados</option
+                    >
+                    <option value='51'>51 - Factura M</option>
+                    <option value='52'>52 - Nota de Débito M</option>
+                    <option value='53'>53 - Nota de Crédito M</option>
+                    <option value='54'>54 - Recibo M</option>
+                    <option value='60'
+                      >60 - Cta. de Vta. y Líquido Prod. A</option
+                    >
+                    <option value='61'
+                      >61 - Cta. de Vta. y Líquido Prod. B</option
+                    >
+                    <option value='63'>63 - Liquidación A</option>
+                    <option value='64'>64 - Liquidación B</option>
+                    <option value='109'>109 - Tique C</option>
+                    <option value='114'>114 - Tique Nota de Crédito C</option>
+                    <option value='195'>195 - Factura T</option>
+                    <option value='196'>196 - Nota de Débito T</option>
+                    <option value='197'>197 - Nota de Crédito T</option>
+                    <option value='201'
+                      >201 - Factura de Crédito electrónica MiPyMEs (FCE) A</option
+                    >
+                    <option value='202'
+                      >202 - Nota de Débito electrónica MiPyMEs (FCE) A</option
+                    >
+                    <option value='203'
+                      >203 - Nota de Crédito electrónica MiPyMEs (FCE) A</option
+                    >
+                    <option value='206'
+                      >206 - Factura de Crédito electrónica MiPyMEs (FCE) B</option
+                    >
+                    <option value='207'
+                      >207 - Nota de Débito electrónica MiPyMEs (FCE) B</option
+                    >
+                    <option value='208'
+                      >208 - Nota de Crédito electrónica MiPyMEs (FCE) B</option
+                    >
+                    <option value='211'
+                      >211 - Factura de Crédito electrónica MiPyMEs (FCE) C</option
+                    >
+                    <option value='212'
+                      >212 - Nota de Débito electrónica MiPyMEs (FCE) C</option
+                    >
+                    <option value='213'
+                      >213 - Nota de Crédito electrónica MiPyMEs (FCE) C</option
+                    >
+                  </select>
+                  <span
+                    class='custom-combobox'
+                    style='width: 1896px;'
+                  >
+                    <input
+                      disabled
+                      title=''
+                      class='custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left ui-autocomplete-input'
+                      autocomplete='off'
+                      value={doc.tipoComp}
+                    />
+                    <a
+                      tabindex='-1'
+                      class='ui-button ui-widget ui-state-default ui-button-icon-only custom-combobox-toggle ui-corner-right'
+                      role='button'
+                      title=''
+                    >
+                      <span
+                        class='ui-button-icon-primary ui-icon ui-icon-triangle-1-s'
+                      ></span>
+                      <span class='ui-button-text'></span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+              <div class='units-row'>
+                <div class='unit-30'>
+                  <h6>Punto de Venta - Número de Comprobante:</h6>
+                </div>
+                <div class='unit-70'>
+                  <input
+                    type='text'
+                    id='p_pto_vta'
+                    maxlength='5'
+                    class='numeric-only'
+                    disabled
+                    value={doc.pVenta}
+                  />
+                  <span>&nbsp;-&nbsp;</span>
+                  <input
+                    type='text'
+                    id='p_nro_cbte'
+                    maxlength='8'
+                    class='numeric-only'
+                    disabled
+                    value={doc.nroComp}
+                  />
+                </div>
+              </div>
+              <div
+                class='units-row'
+                id='moneda'
+              >
+                <div class='unit-40'>
+                  <h6>
+                    Importe Total de la operación en la moneda original del
+                    comprobante:
+                  </h6>
+                </div>
+                <div class='unit-60'>
+                  <input
+                    type='text'
+                    id='p_importe'
+                    autocomplete='off'
+                    maxlength='16'
+                    style='text-transform:none; display: inline-block;'
+                    class='numeric-only'
+                    original-title="Utilice el punto '.' como separador decimal."
+                    disabled
+                    value={doc.importeTotal}
+                  />
+                </div>
+              </div>
+              <div
+                class='units-row'
+                id='tipo_doc'
+              >
+                <div class='unit-40'>
+                  <h6>Documento del receptor del comprobante:</h6>
+                </div>
+                <div class='unit-60'>
+                  <select
+                    name='ctl00$cphBody$p_tipo_doc'
+                    id='ctl00_cphBody_p_tipo_doc'
+                    style='cursor: pointer; display: none;'
+                  >
+                    <option
+                      selected='selected'
+                      value=''
+                    ></option>
+                    <option value='0'>00 - CI Policía Federal</option>
+                    <option value='1'>01 - CI Buenos Aires</option>
+                    <option value='2'>02 - CI Catamarca</option>
+                    <option value='3'>03 - CI Córdoba</option>
+                    <option value='4'>04 - CI Corrientes</option>
+                    <option value='5'>05 - CI Entre Ríos</option>
+                    <option value='6'>06 - CI Jujuy</option>
+                    <option value='7'>07 - CI Mendoza</option>
+                    <option value='8'>08 - CI La Rioja</option>
+                    <option value='9'>09 - CI Salta</option>
+                    <option value='10'>10 - CI San Juan</option>
+                    <option value='11'>11 - CI San Luis</option>
+                    <option value='12'>12 - CI Santa Fe</option>
+                    <option value='13'>13 - CI Santiago del Estero</option>
+                    <option value='14'>14 - CI Tucumán</option>
+                    <option value='16'>16 - CI Chaco</option>
+                    <option value='17'>17 - CI Chubut</option>
+                    <option value='18'>18 - CI Formosa</option>
+                    <option value='19'>19 - CI Misiones</option>
+                    <option value='20'>20 - CI Neuquén</option>
+                    <option value='21'>21 - CI La Pampa</option>
+                    <option value='22'>22 - CI Río Negro</option>
+                    <option value='23'>23 - CI Santa Cruz</option>
+                    <option value='24'>24 - CI Tierra del Fuego</option>
+                    <option value='80'>80 - CUIT</option>
+                    <option value='86'>86 - CUIL</option>
+                    <option value='87'>87 - CDI</option>
+                    <option value='89'>89 - LE</option>
+                    <option value='90'>90 - LC</option>
+                    <option value='91'>91 - CI Extranjera</option>
+                    <option value='92'>92 - en trámite</option>
+                    <option value='93'>93 - Acta Nacimiento</option>
+                    <option value='94'>94 - Pasaporte</option>
+                    <option value='95'>95 - CI Bs. As. RNP</option>
+                    <option value='96'>96 - DNI</option>
+                    <option value='99'>99 - Doc. (otro)</option>
+                  </select>
+                  <span
+                    class='custom-combobox'
+                    style='width: 1896px;'
+                  >
+                    <input
+                      disabled
+                      title=''
+                      class='custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left ui-autocomplete-input'
+                      autocomplete='off'
+                      placeholder='Tipo'
+                      value={doc.docReceptor}
+                    />
+
+                    <a
+                      tabindex='-1'
+                      class='ui-button ui-widget ui-state-default ui-button-icon-only custom-combobox-toggle ui-corner-right'
+                      role='button'
+                      title=''
+                      style="display: none !important;"
+                    >
+                      <span
+                        class='ui-button-icon-primary ui-icon ui-icon-triangle-1-s'
+                      ></span>
+                      <span class='ui-button-text'></span>
+                    </a>
+                  </span>&nbsp;&nbsp;
+                  <input
+                    type='text'
+                    id='p_nro_doc'
+                    autocomplete='off'
+                    maxlength='12'
+                    style='width:122px;text-transform:none;display: inline-block;'
+                    class='numeric-only'
+                    placeholder='Número'
+                    disabled
+                    value={doc.docNro}
+                  />
+                </div>
+              </div>
+            </div>
+            <div class='unit-100'>
+              <!-- CAPTCHA -->
+
+              <script>
+
+                // Captcha
+                const caracteres =
+                  '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+                let captcha = '';
+
+                const captchaText = document.getElementById('captcha');
+                const captchaBox = document.getElementById('ctl00_cphBody_txtCaptcha');
+                
+                const refreshBtn = document
+                  .getElementById('imgRefresh')
+                  .addEventListener('click', () => {
+                    doCaptcha()
+                  })
+
+                function doCaptcha() {
+                  captcha = '';
+                  for (let i = 0; i < 5; i++) {
+                    captcha +=
+                      caracteres[Math.floor(Math.random() * caracteres.length)]
+                  }
+
+                  captchaText.innerHTML = captcha;
+                }
+
+                doCaptcha()
+
+                // Modal + Info
+
+                const btnConsultar = document.getElementById('btnConsultarDatos').addEventListener('click', ()=> {
+                  validar();
+                })
+                const btnLimpiar = document.getElementById('btnLimpiar').addEventListener('click', ()=> {
+                    window.location.replace('https://serviciosweb.afip.gob.ar/genericos/comprobantes/cae.aspx')
+                })
+                const info = document.getElementById('success')
+                const failure = document.getElementById('failure')
+
+                function validar () {
+                  if (captchaBox.value === captchaText.innerHTML) {
+                    failure.classList.add('hidden');
+                    info.classList.remove('hidden');
+                    captchaBox.value = '';
+                    doCaptcha();
+                    setTimeout(() => {
+                      info.scrollIntoView();
+
+                    }, 500);
+
+                  } else if (captchaBox.value !== captchaText.innerHTML) {
+                    info.classList.add('hidden');
+                    captchaBox.value = '';
+                    doCaptcha();
+                    failure.classList.remove('hidden');
+                    captchaBox.focus();
+                  }
+                }
+
+                
+              </script>
+
+              <div class='units-row'>
+                <div class='unit-40'>
+                  <h6>Ingrese los caracteres de la imagen:</h6>
+                </div>
+                <div class='unit-60'>
+                  <p id='captcha'>&nbsp;</p>
+
+                  <style>
+                    #captcha {
+                      display: inline-block;
+                      position: relative;
+                      color: #ababab;
+                      font-family: Sans-serif;
+                      font-weight: bold;
+                      font-size: 24px !important;
+                      
+                      margin-bottom: -11px;
+                      padding: 5px;
+                      width: 110px;
+                      height: 36px;
+                      text-align: center;
+                      overflow: hidden;
+
+                      -webkit-user-select: none; /* Safari */
+                      -moz-user-select: none; /* Firefox */
+                      -ms-user-select: none; /* IE10+/Edge */
+                      user-select: none; /* Standard */
+                    }
+
+                    #captcha::after {
+                      top: -50px;
+                      left: -20px;
+                      width: 120px;
+                      height: 120px;
+                      color: transparent;
+                      content: 'aaaaa';
+                      padding: 5px;
+                      position: absolute;
+                      background: radial-gradient(
+                          circle,
+                          #b6b6b6 10%,
+                          transparent 11%
+                        ),
+                        radial-gradient(
+                          circle at bottom left,
+                          #b6b6b6 5%,
+                          transparent 6%
+                        ),
+                        radial-gradient(
+                          circle at bottom right,
+                          #b6b6b6 5%,
+                          transparent 6%
+                        ),
+                        radial-gradient(
+                          circle at top left,
+                          #b6b6b6 5%,
+                          transparent 6%
+                        ),
+                        radial-gradient(
+                          circle at top right,
+                          #b6b6b6 5%,
+                          transparent 6%
+                        );
+                      background-size: 3px 3px;
+                      background-color: transparent;
+                      opacity: 1;
+                      rotate: 60deg;
+                    }
+                  </style>
+
+                  &nbsp;
+                  <input
+                    type='button'
+                    id='imgRefresh'
+                    value='Actualizar'
+                    class='gris'
+                  />&nbsp;&nbsp;
+                  <input
+                    name='ctl00$cphBody$txtCaptcha'
+                    type='text'
+                    maxlength='5'
+                    id='ctl00_cphBody_txtCaptcha'
+                    class='txtCaptcha'
+                    value=""
+                    original-title='Respete mayúsculas y minúsculas'
+                  />
+                </div>
+              </div>
+
+              <!-- CAPTCHA FIN -->
+            </div>
+            <div class='separadorDottedSimple'></div>
+            <div
+              id='divBotones'
+              class='unit-100'
+            >
+              <div class='units-row'>
+                <div class='unit-100 textRight'>
+                  <input
+                    type='button'
+                    id='btnConsultarDatos'
+                    value='Consultar'
+                    class='naranja'
+                  />
+                  <input
+                    type='button'
+                    id='btnLimpiar'
+                    value='Modificar Consulta'
+                  />
+                  <input
+                    type='button'
+                    id='btnModificarConsulta'
+                    value='Modificar Consulta'
+                    style='display:none;'
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <!-- FORMULARIO FIN -->
+      </div>
+    </div>
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
+    <div class='units-row'>
+      <div class="unit-100 hidden" id="failure">
+        <ErrorModal/>
+      </div>
+      <div class='unit-100 hidden' id="success" >
+        <div
+          id='divMensaje'
+          style=''
+          class=''
+        >
+          <div
+            class='border-1 recuadroGrisClaro paddingInterno-5 marginBottom-20'
+            style='border:1px solid #6E9C4E;'
+          >
+            <h3 style="font-weight: 400;">
+              <img
+                src='https://serviciosweb.afip.gob.ar/genericos/comprobantes/images/verify.png'
+                class='icon48 padding-10'
+              />Los datos ingresados coinciden con una autorización otorgada por
+              la AFIP.
+            </h3>
+          </div>
+        </div>
+        <div
+          id='divDetalle'
+          style='display: block;'
+          class=''
+        >
+          <div class='border-1 recuadroGrisClaro marginBottom-20'>
+            <ul class='arrowAzul'>
+              <li>CUIT: <strong>{doc.cuit}</strong></li><li>
+                Denominación: <strong>{doc.denom}</strong>
+              </li><li>CAE: <strong>{doc.cae}</strong></li><li>
+                Fecha de Emisión: <strong>{doc.fechaEmision}</strong>
+              </li><li>
+                Tipo de Comprobante: <strong>{doc.tipoComp}</strong>
+              </li><li>
+                Comprobante: <strong>{doc.pVenta}-{doc.nroComp}</strong>
+              </li><li>
+                Importe Total: <strong>{doc.importeTotal}</strong>
+              </li><li>
+                Documento: <strong>{doc.docReceptor} {doc.docNro}</strong>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

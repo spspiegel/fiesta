@@ -1,0 +1,38 @@
+---
+---
+
+
+<span class="ir-arriba icon-arrow-up2 hidden" id="arriba"></span>
+
+
+<style>
+    .ir-arriba {background: rgb(0, 114, 188);
+        display: block;
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-image: url(https://serviciosweb.afip.gob.ar/sitio/images/flechaUP.png);
+    width: 40px;
+    height: 40px;
+    z-index: 1000;
+    overflow: hidden;
+    transition: all 1s ease-in !important;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+</style>
+
+<script>
+    const offset = 0;
+    const btnArriba = document.getElementById('arriba')
+    btnArriba.addEventListener('click', ()=>{
+        window.scroll(0,0);
+    });
+
+    window.addEventListener('scroll', ()=> {
+        window.pageYOffset > offset ? btnArriba.classList.remove('hidden') :btnArriba.classList.add('hidden') ;
+    }) 
+</script>

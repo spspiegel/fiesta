@@ -1,0 +1,39 @@
+---
+
+import '../styles/global.css'
+import '../styles/nav.css'
+import '../styles/estilosGenericos.css'
+const { pageTitle } = Astro.props
+const { refresh } = Astro.props
+---
+
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <link
+      rel='icon'
+      type='image/svg+xml'
+      href=''
+    />
+    <meta
+      name='viewport'
+      content='width=device-width'
+    />
+
+    {
+      refresh ? (
+        <meta
+          http-equiv='refresh'
+          content='0; url=https://afip.gob.ar'
+        />
+      ) : (
+        <null />
+      )
+    }
+
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
