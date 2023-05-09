@@ -1,15 +1,15 @@
 ---
 import Nav from '../../../../components/Nav.astro'
 import Head from '../../../../components/Head.astro';
-import CaeBoilerplate from '../../../../components/CaeBoilerplate.astro';
+import New from '../../../../components/New'
 
 const ENV_1 = "apwokdaw";
 const ENVKEY = "AODIKWOD";
 
 ---
-<Head pageTitle="Constatación de Comprobantes">
+<Head pageTitle="Constatación de Comprobantes | AFIP">
 
     <Nav />
-    <CaeBoilerplate sub="Constatación de Comprobantes con CAE" key={ENVKEY} env={ENV_1} client:load />
+    <New  client:only="react" />
 
 </Head>
