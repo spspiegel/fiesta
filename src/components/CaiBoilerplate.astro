@@ -2,25 +2,6 @@
 const { sub } = Astro.props
 const { text } = Astro.props
 
-import { fallback } from '../assets/example'
-
-/*supabase
-import { createClient } from '@supabase/supabase-js'
-const supabase = createClient(
-  'https://xllwbfbywxjxvqvwpnei.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsbHdiZmJ5d3hqeHZxdndwbmVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODMyMTY1NDYsImV4cCI6MTk5ODc5MjU0Nn0.jKaN0Xv3uzHJPYyBUQVIL0DABUwYTvhuNcZdQZSO-wk'
-)
-
-const { data } = await supabase.from('cae').select()
-
-let doc = {}
-if (data[0]) {
-  doc = data[1]
-} else {
-  doc = fallback
-}
-*/
-
 import ErrorModal from './ErrorModal.astro'
 import GoTopButton from './GoTopButton.astro'
 ---
