@@ -4,56 +4,90 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsbHdiZmJ5d3hqeHZxdndwbmVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODMyMTY1NDYsImV4cCI6MTk5ODc5MjU0Nn0.jKaN0Xv3uzHJPYyBUQVIL0DABUwYTvhuNcZdQZSO-wk'
 )
 
-const { data } = await supabase.from('cai').select()
-console.log(data)
+
+// DOM Vars
+const elementoPCuit = document.getElementById('p_CUIT') //value
+const elementoSCuit = document.getElementById('s_cuit') //inner
+
+const elementoSDenom = document.getElementById('s_denom') //inner
+
+const elementoPCai = document.getElementById('p_CAI') //value
+const elementoSCai = document.getElementById('s_cai') //inner
+
+const elementoPFechaEmision = document.getElementById('p_fch_emision') //value
+const elementoSFechaEmision = document.getElementById('s_fch') //inner
+
+const elementoPTipoCbte = document.getElementById('tipoComp') //value
+const elementoSTipoCbte = document.getElementById('s_cbte') //inner
+
+const elementoPPtoVta = document.getElementById('p_pto_vta') //value
+const elementoPNroCbte = document.getElementById('p_nro_cbte') //value
+const elementoVtaCbte = document.getElementById('p_nro_cbte') //value
+//
 
 const url = window.location.search
 const id = new URLSearchParams(url).get('p')
 
-let index
-const no = '-'
-for (const i in data) {
-  if (data[i].id == id) {
-    console.log(i)
-    index = i
+const { data, error} = await supabase.from('cai').select('*').eq('id', id)
 
-    const { cai, cuit, denom, fechaEmision, nroComp, pVenta, tipoComp } =
-      data[index]
+if(error) {
+  console.log(error)
+  setErrorData('UNEXPECTED SERVER ERROR')
+}
 
-    document.getElementById('p_CUIT').value = cuit
-    document.getElementById('s_cuit').innerHTML = cuit
+if(data.length > 0) {
+  setFormData(data)
+} else if (data.length === 0) setErrorData('-')
 
-    document.getElementById('s_denom').innerHTML = denom
+if(data[0]?.enabled === true) {
+  console.log('trueee')
+} else if (data[0]?.enabled === false) {
+  console.log('falsee')
+}
 
-    document.getElementById('p_CAI').value = cai
-    document.getElementById('s_cai').innerHTML = cai
 
-    document.getElementById('p_fch_emision').value = fechaEmision
-    document.getElementById('s_fch').innerHTML = fechaEmision
 
-    document.getElementById('tipoComp').value = tipoComp
-    document.getElementById('s_cbte').innerHTML = tipoComp
 
-    document.getElementById('p_pto_vta').value = pVenta
-    document.getElementById('p_nro_cbte').value = nroComp
-    document.getElementById('vta-comp').innerHTML = `${pVenta}-${nroComp}`
-  } else {
-    document.getElementById('p_CUIT').value = no
-    document.getElementById('s_cuit').innerHTML = no
 
-    document.getElementById('s_denom').innerHTML = no
+function setFormData (data) {
+  const { cai, cuit, denom, fechaEmision, nroComp, pVenta, tipoComp } =
+  data[0]
 
-    document.getElementById('p_CAI').value = no
-    document.getElementById('s_cai').innerHTML = no
+  elementoPCuit.value = cuit
+  elementoSCuit.innerHTML = cuit
 
-    document.getElementById('p_fch_emision').value = no
-    document.getElementById('s_fch').innerHTML = no
+  elementoSDenom.innerHTML = denom
 
-    document.getElementById('tipoComp').value = no
-    document.getElementById('s_cbte').innerHTML = no
+  elementoPCai.value = cai
+  elementoSCai.innerHTML = cai
 
-    document.getElementById('p_pto_vta').value = no
-    document.getElementById('p_nro_cbte').value = no
-    document.getElementById('vta-comp').innerHTML = no
-  }
+  elementoPFechaEmision.value = fechaEmision
+  elementoSFechaEmision.innerHTML = fechaEmision
+
+  elementoPTipoCbte.value = tipoComp
+  elementoSTipoCbte.innerHTML = tipoComp
+
+  elementoPPtoVta.value = pVenta
+  elementoPNroCbte.value = nroComp
+  elementoVtaCbte.innerHTML = `${pVenta}-${nroComp}`
+}
+
+function setErrorData (errorSymbol) {
+  elementoPCuit.value = errorSymbol
+  elementoSCuit.innerHTML = errorSymbol
+
+  elementoSDenom.innerHTML = errorSymbol
+
+  elementoPCai.value = errorSymbol
+  elementoSCai.innerHTML = errorSymbol
+
+  elementoPFechaEmision.value = errorSymbol
+  elementoSFechaEmision.innerHTML = errorSymbol
+
+  elementoPTipoCbte.value = errorSymbol
+  elementoSTipoCbte.innerHTML = errorSymbol
+
+  elementoPPtoVta.value = errorSymbol
+  elementoPNroCbte.value = errorSymbol
+  elementoVtaCbte.innerHTML = `${errorSymbol}-${errorSymbol}`
 }
