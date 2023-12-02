@@ -173,6 +173,15 @@ import GoTopButton from './GoTopButton.astro'
                 const captchaBox = document.getElementById(
                   'ctl00_cphBody_txtCaptcha'
                 )
+                const captchaTooltip = document.getElementById('captcha-tooltip')
+
+                captchaBox.addEventListener('focus', () => {
+                  captchaTooltip.classList.remove('hidden')
+                })
+
+                captchaBox.addEventListener('blur', () => {
+                  captchaTooltip.classList.add('hidden')
+                })
 
                 const refreshBtn = document
                   .getElementById('imgRefresh')
@@ -203,7 +212,7 @@ import GoTopButton from './GoTopButton.astro'
                   .getElementById('btnLimpiar')
                   .addEventListener('click', () => {
                     window.location.replace(
-                      'https://serviciosweb.afip.gob.ar/genericos/comprobantes/cae.aspx'
+                      'https://serviciosweb.afip.gob.ar/genericos/comprobantes/cai.aspx'
                     )
                   })
                 const info = document.getElementById('success')
@@ -299,6 +308,25 @@ import GoTopButton from './GoTopButton.astro'
                       opacity: 1;
                       rotate: 60deg;
                     }
+
+                    .captchaDiv {
+                      position: relative;
+                      display: inline-block;
+                    }
+                    .captcha-tooltip {
+                      background-color: #F0D988; 
+                      color: #000; 
+                      max-width: 300px; 
+                      padding: 5px 8px 4px 8px; 
+                      text-align: center;
+                      font-size: 12px;
+                      min-width: 210px;
+
+                      position: absolute;
+                      top: 43px;
+                      left: -50px;
+                      z-index: 100;
+                    }
                   </style>
 
                   &nbsp;
@@ -308,7 +336,9 @@ import GoTopButton from './GoTopButton.astro'
                     value='Actualizar'
                     class='gris'
                   />&nbsp;&nbsp;
-                  <input
+                  <div class="captchaDiv">
+
+                    <input
                     name='ctl00$cphBody$txtCaptcha'
                     type='text'
                     maxlength='5'
@@ -316,7 +346,9 @@ import GoTopButton from './GoTopButton.astro'
                     class='txtCaptcha'
                     value=''
                     original-title='Respete mayúsculas y minúsculas'
-                  />
+                    />
+                    <span class="captcha-tooltip hidden" id="captcha-tooltip">Respete mayúsculas y minúsculas</span>
+                  </div>
                 </div>
               </div>
 
@@ -371,10 +403,11 @@ import GoTopButton from './GoTopButton.astro'
         class='unit-100 hidden'
         id='success'
       >
+        <!-- Enabled -->
         <div
-          id='divMensaje'
+          id='divEnabled'
           style=''
-          class=''
+          class='hidden'
         >
           <div
             class='border-1 recuadroGrisClaro paddingInterno-5 marginBottom-20'
@@ -389,12 +422,73 @@ import GoTopButton from './GoTopButton.astro'
             </h3>
           </div>
         </div>
+        <!-- Not enabled -->
+        <div
+          id='divNotEnabled'
+          style=''
+          class='hidden'
+        >
+          <div
+            class='border-1 recuadroGrisClaro paddingInterno-5 marginBottom-20'
+            style='border:1px solid rgb(255,0,0);'
+          >
+            <h3 style='font-weight: 400;'>
+              <img
+                src='https://serviciosweb.afip.gob.ar/genericos/comprobantes/images/error.png'
+                class='icon48 padding-10'
+              />Se ha detectado al menos uno de los siguientes errores:
+            </h3>
+            <style>
+              .checkNaranja2 {
+                margin: 10px 20px;
+              }
+
+              .checkNaranja2 li {
+                background-image: url(https://serviciosweb.afip.gob.ar/sitio/css/images/listas/list-check-Naranja.png) !important;
+                background-repeat: no-repeat;
+                background-position: 0 12px;
+                list-style: none !important;
+                padding: 5px 20px 7px 20px;
+                line-height: 22px;
+                min-height: 30px;
+                text-decoration: none;
+                vertical-align: text-top;
+                border-bottom: 1px dotted #dadada !important;
+              }
+
+            </style>
+            <ul class="checkNaranja2">
+              <li>El NÚMERO CAI consultado no existe en las bases de datos del organismo.</li>
+              <li>Se podrán constatar comprobantes con FECHA DE EMISIÓN del 01/01/2013 en adelante.</li>
+              <li>La CUIT del emisor no se corresponde con el CAI ingresado.</li>
+              <li>El TIPO DE COMPROBANTE no se corresponde con el CAI ingresado.</li>
+              <li>El PUNTO DE VENTA consignado no se corresponde con el CAI ingresado.</li>
+              <li>El NÚMERO DE COMPROBANTE no se corresponde con el CAI ingresado.
+              </li>
+              <li>La FECHA consignada no se corresponde para el CAI ingresado.</li>
+            </ul>
+          </div>
+        </div>
         <div
           id='divDetalle'
           style='display: block;'
           class=''
         >
           <div class='border-1 recuadroGrisClaro marginBottom-20'>
+            <style>
+              .arrowAzul li {
+                background-image: url(https://serviciosweb.afip.gob.ar/sitio/css/images/listas/list-arrow-1-Azul.png) !important; 
+                background-repeat: no-repeat;
+                background-position: 0 11px;
+                list-style: none !important;
+                padding: 5px 20px;
+                line-height: 22px;
+                min-height: 30px;
+                text-decoration: none;
+                vertical-align: text-top;
+                border-bottom: none !important;
+              }
+            </style>
             <ul class='arrowAzul'>
               <li>CUIT: <strong id="s_cuit"></strong></li><li>
                 Denominación: <strong id='s_denom'></strong>
@@ -414,7 +508,7 @@ import GoTopButton from './GoTopButton.astro'
 </div>
 
 
-<script src="../assets/supa.js" >
+<script src="../assets/func.js" >
   
 
 </script>

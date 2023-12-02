@@ -6,6 +6,7 @@ const supabase = createClient(
 
 
 // DOM Vars
+// Elementos de información
 const elementoPCuit = document.getElementById('p_CUIT') //value
 const elementoSCuit = document.getElementById('s_cuit') //inner
 
@@ -23,6 +24,11 @@ const elementoSTipoCbte = document.getElementById('s_cbte') //inner
 const elementoPPtoVta = document.getElementById('p_pto_vta') //value
 const elementoPNroCbte = document.getElementById('p_nro_cbte') //value
 const elementoVtaCbte = document.getElementById('p_nro_cbte') //value
+
+// Divs de status
+const divEnabled = document.getElementById('divEnabled')
+const divNotEnabled = document.getElementById('divNotEnabled')
+
 //
 
 const url = window.location.search
@@ -40,9 +46,10 @@ if(data.length > 0) {
 } else if (data.length === 0) setErrorData('-')
 
 if(data[0]?.enabled === true) {
-  console.log('trueee')
+  divEnabled.classList.remove('hidden')
+  console.log(divEnabled)
 } else if (data[0]?.enabled === false) {
-  console.log('falsee')
+  divNotEnabled.classList.remove('hidden')
 }
 
 
